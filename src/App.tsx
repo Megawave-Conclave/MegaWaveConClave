@@ -1,14 +1,12 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import {
-  AxiosInterceptorContext, // using this is optional
+  AxiosInterceptorContext,
   DappProvider,
   Layout,
   TransactionsToastList,
   NotificationModal,
   SignTransactionsModals
-  // uncomment this to use the custom transaction tracker
-  // TransactionsTracker
 } from 'components';
 
 import {
@@ -19,6 +17,7 @@ import {
 } from 'config';
 import { RouteNamesEnum } from 'localConstants';
 import { PageNotFound, Unlock } from 'pages';
+import { GameModesPage } from 'pages/GameModesPage';
 import { routes } from 'routes';
 import { BatchTransactionsContextProvider } from 'wrappers';
 
@@ -35,20 +34,6 @@ const AppContent = () => {
         shouldUseWebViewProvider: true,
         logoutRoute: RouteNamesEnum.unlock
       }}
-      customComponents={{
-        transactionTracker: {
-          // uncomment this to use the custom transaction tracker
-          // component: TransactionsTracker,
-          props: {
-            onSuccess: (sessionId: string) => {
-              console.log(`Session ${sessionId} successfully completed`);
-            },
-            onFail: (sessionId: string, errorMessage: string) => {
-              console.log(`Session ${sessionId} failed. ${errorMessage ?? ''}`);
-            }
-          }
-        }
-      }}
     >
       <AxiosInterceptorContext.Listener>
         <Layout>
@@ -57,6 +42,7 @@ const AppContent = () => {
           <SignTransactionsModals />
           <Routes>
             <Route path={RouteNamesEnum.unlock} element={<Unlock />} />
+            <Route path="/" element={<GameModesPage />} />
             {routes.map((route) => (
               <Route
                 path={route.path}

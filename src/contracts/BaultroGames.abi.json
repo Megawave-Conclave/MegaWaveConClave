@@ -1,0 +1,481 @@
+{
+    "buildInfo": {
+        "rustc": {
+            "version": "1.85.0",
+            "commitHash": "4d91de4e48198da2e33413efdcd9cd2cc0c46688",
+            "commitDate": "2025-02-17",
+            "channel": "Stable",
+            "short": "rustc 1.85.0 (4d91de4e4 2025-02-17)"
+        },
+        "contractCrate": {
+            "name": "baultro-games",
+            "version": "0.1.0"
+        },
+        "framework": {
+            "name": "multiversx-sc",
+            "version": "0.56.1"
+        }
+    },
+    "name": "BaultroGames",
+    "constructor": {
+        "inputs": [
+            {
+                "name": "platform_fee",
+                "type": "optional<u8>",
+                "multi_arg": true
+            }
+        ],
+        "outputs": []
+    },
+    "endpoints": [
+        {
+            "name": "create_match",
+            "mutability": "mutable",
+            "payableInTokens": [
+                "EGLD"
+            ],
+            "inputs": [
+                {
+                    "name": "opponent_id",
+                    "type": "Address"
+                },
+                {
+                    "name": "game_mode",
+                    "type": "bytes"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "u64"
+                }
+            ]
+        },
+        {
+            "name": "join_match",
+            "mutability": "mutable",
+            "payableInTokens": [
+                "EGLD"
+            ],
+            "inputs": [
+                {
+                    "name": "match_id",
+                    "type": "u64"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "bool"
+                }
+            ]
+        },
+        {
+            "name": "end_match",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "match_id",
+                    "type": "u64"
+                },
+                {
+                    "name": "winner_id",
+                    "type": "Address"
+                },
+                {
+                    "name": "verification_hash",
+                    "type": "bytes"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "bool"
+                }
+            ]
+        },
+        {
+            "name": "create_raid",
+            "mutability": "mutable",
+            "payableInTokens": [
+                "EGLD"
+            ],
+            "inputs": [
+                {
+                    "name": "difficulty",
+                    "type": "u8"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "u64"
+                }
+            ]
+        },
+        {
+            "name": "attempt_raid",
+            "mutability": "mutable",
+            "payableInTokens": [
+                "EGLD"
+            ],
+            "inputs": [
+                {
+                    "name": "raid_id",
+                    "type": "u64"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "bool"
+                }
+            ]
+        },
+        {
+            "name": "complete_raid",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "raid_id",
+                    "type": "u64"
+                },
+                {
+                    "name": "attacker_id",
+                    "type": "Address"
+                },
+                {
+                    "name": "_verification_hash",
+                    "type": "bytes"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "bool"
+                }
+            ]
+        },
+        {
+            "name": "getMatch",
+            "mutability": "readonly",
+            "inputs": [
+                {
+                    "name": "match_id",
+                    "type": "u64"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "Match"
+                }
+            ]
+        },
+        {
+            "name": "getMatches",
+            "mutability": "readonly",
+            "inputs": [
+                {
+                    "name": "from_index",
+                    "type": "u64"
+                },
+                {
+                    "name": "limit",
+                    "type": "u64"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "variadic<Match>",
+                    "multi_result": true
+                }
+            ]
+        },
+        {
+            "name": "getRaid",
+            "mutability": "readonly",
+            "inputs": [
+                {
+                    "name": "raid_id",
+                    "type": "u64"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "RaidPool"
+                }
+            ]
+        },
+        {
+            "name": "getRaids",
+            "mutability": "readonly",
+            "inputs": [
+                {
+                    "name": "from_index",
+                    "type": "u64"
+                },
+                {
+                    "name": "limit",
+                    "type": "u64"
+                }
+            ],
+            "outputs": [
+                {
+                    "type": "variadic<RaidPool>",
+                    "multi_result": true
+                }
+            ]
+        },
+        {
+            "name": "withdraw",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "BigUint"
+                }
+            ]
+        },
+        {
+            "name": "getMatchesCount",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "u64"
+                }
+            ]
+        },
+        {
+            "name": "getRaidsCount",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "u64"
+                }
+            ]
+        },
+        {
+            "name": "getPlatformFee",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "u8"
+                }
+            ]
+        }
+    ],
+    "events": [
+        {
+            "identifier": "matchCreated",
+            "inputs": [
+                {
+                    "name": "match_id",
+                    "type": "u64",
+                    "indexed": true
+                },
+                {
+                    "name": "creator",
+                    "type": "Address",
+                    "indexed": true
+                },
+                {
+                    "name": "opponent",
+                    "type": "Address",
+                    "indexed": true
+                },
+                {
+                    "name": "stake",
+                    "type": "BigUint"
+                }
+            ]
+        },
+        {
+            "identifier": "matchJoined",
+            "inputs": [
+                {
+                    "name": "match_id",
+                    "type": "u64",
+                    "indexed": true
+                },
+                {
+                    "name": "joiner",
+                    "type": "Address",
+                    "indexed": true
+                },
+                {
+                    "name": "creator",
+                    "type": "Address",
+                    "indexed": true
+                },
+                {
+                    "name": "stake",
+                    "type": "BigUint"
+                }
+            ]
+        },
+        {
+            "identifier": "matchCompleted",
+            "inputs": [
+                {
+                    "name": "match_id",
+                    "type": "u64",
+                    "indexed": true
+                },
+                {
+                    "name": "winner",
+                    "type": "Address",
+                    "indexed": true
+                },
+                {
+                    "name": "amount",
+                    "type": "BigUint"
+                }
+            ]
+        },
+        {
+            "identifier": "raidCreated",
+            "inputs": [
+                {
+                    "name": "raid_id",
+                    "type": "u64",
+                    "indexed": true
+                },
+                {
+                    "name": "creator",
+                    "type": "Address",
+                    "indexed": true
+                },
+                {
+                    "name": "difficulty",
+                    "type": "u8",
+                    "indexed": true
+                },
+                {
+                    "name": "stake",
+                    "type": "BigUint"
+                }
+            ]
+        },
+        {
+            "identifier": "raidAttempt",
+            "inputs": [
+                {
+                    "name": "raid_id",
+                    "type": "u64",
+                    "indexed": true
+                },
+                {
+                    "name": "attacker",
+                    "type": "Address",
+                    "indexed": true
+                },
+                {
+                    "name": "attempt_number",
+                    "type": "u32",
+                    "indexed": true
+                },
+                {
+                    "name": "fee",
+                    "type": "BigUint"
+                }
+            ]
+        },
+        {
+            "identifier": "raidCompleted",
+            "inputs": [
+                {
+                    "name": "raid_id",
+                    "type": "u64",
+                    "indexed": true
+                },
+                {
+                    "name": "attacker",
+                    "type": "Address",
+                    "indexed": true
+                },
+                {
+                    "name": "rewards",
+                    "type": "BigUint"
+                }
+            ]
+        }
+    ],
+    "esdtAttributes": [],
+    "hasCallback": false,
+    "types": {
+        "Match": {
+            "type": "struct",
+            "fields": [
+                {
+                    "name": "id",
+                    "type": "u64"
+                },
+                {
+                    "name": "creator",
+                    "type": "Address"
+                },
+                {
+                    "name": "opponent",
+                    "type": "Address"
+                },
+                {
+                    "name": "game_mode",
+                    "type": "bytes"
+                },
+                {
+                    "name": "stake",
+                    "type": "BigUint"
+                },
+                {
+                    "name": "winner",
+                    "type": "Option<Address>"
+                },
+                {
+                    "name": "created_at",
+                    "type": "u64"
+                },
+                {
+                    "name": "completed_at",
+                    "type": "Option<u64>"
+                },
+                {
+                    "name": "verification_hash",
+                    "type": "Option<bytes>"
+                }
+            ]
+        },
+        "RaidPool": {
+            "type": "struct",
+            "fields": [
+                {
+                    "name": "id",
+                    "type": "u64"
+                },
+                {
+                    "name": "creator",
+                    "type": "Address"
+                },
+                {
+                    "name": "stake",
+                    "type": "BigUint"
+                },
+                {
+                    "name": "attempts",
+                    "type": "u32"
+                },
+                {
+                    "name": "difficulty",
+                    "type": "u8"
+                },
+                {
+                    "name": "completed",
+                    "type": "bool"
+                },
+                {
+                    "name": "created_at",
+                    "type": "u64"
+                }
+            ]
+        }
+    }
+}
